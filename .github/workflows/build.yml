@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: mysrc
 
       - name: Set up Java 21
         uses: actions/setup-java@v4
@@ -16,14 +18,25 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Download NeoForge MDK
+        run: |
+          wget -q https://github.com/neoforged/MDK/archive/refs/heads/main.zip -O mdk.zip
+          unzip -q mdk.zip
+          mv MDK-main modproject
 
-      - name: Build with Gradle
+      - name: Copy mod sources into MDK
+        run: |
+          cp -r mysrc/src modproject/
+          cp mysrc/build.gradle modproject/build.gradle
+          cp mysrc/settings.gradle modproject/settings.gradle
+          cp mysrc/gradle.properties modproject/gradle.properties
+
+      - name: Build
+        working-directory: modproject
         run: ./gradlew build
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
           name: EmergencyMod-1.21.1
-          path: build/libs/*.jar
+          path: modproject/build/libs/*.jar
