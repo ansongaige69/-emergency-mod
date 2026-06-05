@@ -18,6 +18,11 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.8'
+
       - name: Download NeoForge MDK
         run: |
           wget -q https://github.com/neoforged/MDK/archive/refs/heads/main.zip -O mdk.zip
@@ -33,7 +38,7 @@ jobs:
 
       - name: Build
         working-directory: modproject
-        run: ./gradlew build
+        run: gradle build
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
