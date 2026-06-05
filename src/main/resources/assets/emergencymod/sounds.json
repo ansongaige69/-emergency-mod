@@ -1,0 +1,6 @@
+{
+  "emergency_alarm": {
+    "subtitle": "subtitles.emergencymod.emergency_alarm",
+    "sounds": [{"name": "emergencymod:emergency_alarm","stream": false,"attenuation_distance": 64}]
+  }
+}
